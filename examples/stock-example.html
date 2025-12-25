@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FCS API - Stock Example</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        h1 { color: #333; }
+        h2 { color: #666; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .result { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; overflow-x: auto; }
+        .result pre { margin: 0; white-space: pre-wrap; word-wrap: break-word; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e9; color: #2e7d32; }
+        button { background: #4caf50; color: white; border: none; padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px; }
+        button:hover { background: #388e3c; }
+        .loading { color: #666; font-style: italic; }
+        .config-box { background: #fff3e0; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .config-box code { background: #ffcc80; padding: 2px 6px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>FCS API - Stock Example</h1>
+
+    <div class="config-box">
+        <strong>Configuration:</strong> Open <code>src/FcsConfig.js</code> and set your authentication:
+        <ul>
+            <li><code>authMethod = 'access_key'</code> - Set your API key in <code>accessKey</code></li>
+            <li><code>authMethod = 'ip_whitelist'</code> - No key needed if your IP is whitelisted</li>
+            <li><code>authMethod = 'token'</code> - Set <code>publicKey</code>, <code>token</code>, and <code>tokenExpiry</code></li>
+        </ul>
+    </div>
+
+    <h2>Actions</h2>
+    <button onclick="getSymbolsList()">Get NASDAQ Symbols</button>
+    <button onclick="getLatestPrice()">Get AAPL Price</button>
+    <button onclick="getHistory()">Get Historical Data</button>
+    <button onclick="getProfile()">Get AAPL Profile</button>
+    <button onclick="getEarnings()">Get AAPL Earnings</button>
+    <button onclick="getDividends()">Get AAPL Dividends</button>
+    <button onclick="getTopGainers()">Top Gainers</button>
+
+    <h2>Results</h2>
+    <div id="result" class="result">
+        <p>Click a button to see results...</p>
+    </div>
+
+    <!-- Load required files only -->
+    <script src="../src/FcsConfig.js"></script>
+    <script src="../src/FCS_Stock.js"></script>
+    <script src="../src/FcsApi.js"></script>
+    <script>
+        // ============================================
+        // AUTHENTICATION SETUP
+        // ============================================
+        // Choose ONE of these methods:
+
+        // Method 1: Access Key (set in FcsConfig.js)
+        const fcsapi = new FcsApi();
+
+        // Method 2: Access Key (pass directly)
+        // const config = FcsConfig.withAccessKey('YOUR_ACCESS_KEY');
+        // const fcsapi = new FcsApi(config);
+
+        // Method 3: IP Whitelist (no key needed)
+        // const config = FcsConfig.withIpWhitelist();
+        // const fcsapi = new FcsApi(config);
+
+        // Method 4: Token (generated from your backend)
+        // const config = FcsConfig.withToken('PUBLIC_KEY', 'TOKEN_FROM_BACKEND', 1735123456);
+        // const fcsapi = new FcsApi(config);
+
+        // Method 5: Set token after initialization
+        // const fcsapi = new FcsApi();
+        // fcsapi.setToken({
+        //     token: 'TOKEN_FROM_BACKEND',
+        //     expiry: 1735123456,
+        //     publicKey: 'YOUR_PUBLIC_KEY'
+        // });
+
+        // ============================================
+        // Helper functions
+        // ============================================
+        function showLoading() {
+            document.getElementById('result').innerHTML = '<p class="loading">Loading...</p>';
+        }
+
+        function showResult(data) {
+            const resultDiv = document.getElementById('result');
+            if (data.status === true) {
+                resultDiv.className = 'result success';
+            } else {
+                resultDiv.className = 'result error';
+            }
+            resultDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+        }
+
+        // ============================================
+        // API Functions
+        // ============================================
+        async function getSymbolsList() {
+            showLoading();
+            const result = await fcsapi.stock.getSymbolsList('NASDAQ');
+            showResult(result);
+        }
+
+        async function getLatestPrice() {
+            showLoading();
+            const result = await fcsapi.stock.getLatestPrice('NASDAQ:AAPL');
+            showResult(result);
+        }
+
+        async function getHistory() {
+            showLoading();
+            const result = await fcsapi.stock.getHistory('NASDAQ:AAPL', '1D', 5);
+            showResult(result);
+        }
+
+        async function getProfile() {
+            showLoading();
+            const result = await fcsapi.stock.getProfile('AAPL');
+            showResult(result);
+        }
+
+        async function getEarnings() {
+            showLoading();
+            const result = await fcsapi.stock.getEarnings('NASDAQ:AAPL', 'annual');
+            showResult(result);
+        }
+
+        async function getDividends() {
+            showLoading();
+            const result = await fcsapi.stock.getDividends('NASDAQ:AAPL');
+            showResult(result);
+        }
+
+        async function getTopGainers() {
+            showLoading();
+            const result = await fcsapi.stock.getTopGainers('NASDAQ', 10);
+            showResult(result);
+        }
+
+        // Ready message
+        document.getElementById('result').innerHTML = '<p class="success">Ready! Click a button to make API calls.</p>';
+    </script>
+</body>
+</html>

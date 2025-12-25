@@ -1,0 +1,53 @@
+{
+    "name": "fcsapi-rest",
+    "version": "4.0.0",
+    "description": "JavaScript & Node.js REST API client for Forex, Cryptocurrency, and Stock market data from FCS API",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"No tests yet\""
+    },
+    "keywords": [
+        "fcs",
+        "fcsapi",
+        "forex",
+        "cryptocurrency",
+        "crypto",
+        "stock",
+        "rest-api",
+        "market-data",
+        "trading",
+        "currency",
+        "exchange-rates",
+        "bitcoin",
+        "ethereum",
+        "javascript",
+        "ajax",
+        "nodejs"
+    ],
+    "author": {
+        "name": "FCS API",
+        "email": "support@fcsapi.com",
+        "url": "https://fcsapi.com"
+    },
+    "license": "MIT",
+    "homepage": "https://github.com/fcsapi/rest-api-js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/fcsapi/rest-api-js.git"
+    },
+    "bugs": {
+        "url": "https://github.com/fcsapi/rest-api-js/issues",
+        "email": "support@fcsapi.com"
+    },
+    "files": [
+        "index.js",
+        "src/FcsConfig.js",
+        "src/FcsApi.js",
+        "src/FCS_Forex.js",
+        "src/FCS_Crypto.js",
+        "src/FCS_Stock.js"
+    ],
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}
